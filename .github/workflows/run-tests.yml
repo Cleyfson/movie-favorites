@@ -27,6 +27,10 @@ jobs:
         run: php artisan key:generate
         working-directory: ./api
 
+      - name: Generate JWT secret
+        run: php artisan jwt:secret --force
+        working-directory: ./api
+
       - name: Run unit tests
         run: php artisan test
         working-directory: ./api
