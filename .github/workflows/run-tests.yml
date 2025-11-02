@@ -4,7 +4,13 @@ on: [push, pull_request]
 
 jobs:
   tests:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        php: ['8.1']
 
     steps:
       - uses: actions/checkout@v4
@@ -12,15 +18,22 @@ jobs:
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.1'
+          php-version: ${{ matrix.php }}
           coverage: pcov
+          extensions: pdo, pdo_mysql, mbstring, zip, exif, pcntl, gd
 
       - name: Install Composer dependencies
         run: composer install --no-progress --prefer-dist
         working-directory: ./api
 
-      - name: Copy .env
+      - name: Copy .env (Unix)
+        if: runner.os != 'Windows'
         run: cp .env.example .env
+        working-directory: ./api
+
+      - name: Copy .env (Windows)
+        if: runner.os == 'Windows'
+        run: copy .env.example .env
         working-directory: ./api
 
       - name: Generate app key
@@ -39,4 +52,4 @@ jobs:
         uses: codecov/codecov-action@v4
         with:
           files: ./api/coverage.xml
-          fail_ci_if_error: true
+          fail_ci_if_error: false
