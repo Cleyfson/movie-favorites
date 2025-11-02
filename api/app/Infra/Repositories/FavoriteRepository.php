@@ -38,11 +38,7 @@ class FavoriteRepository implements FavoriteRepositoryInterface
     $query = DB::table('favorites')
         ->where('user_id', $userId);
 
-    if ($genreFilter !== null) {
-        $query->whereJsonContains('genre_ids', $genreFilter);
-    }
-
-    return $query->get()->map(function ($record) {
+    $results = $query->get()->map(function ($record) {
         return (new Favorite())
             ->setId($record->id)
             ->setUserId($record->user_id)
@@ -53,7 +49,15 @@ class FavoriteRepository implements FavoriteRepositoryInterface
             ->setPosterPath($record->poster_path)
             ->setReleaseDate($record->release_date)
             ->setGenreIds(json_decode($record->genre_ids, true));
-    })->all();
+    });
+
+    if ($genreFilter !== null) {
+        $results = $results->filter(function ($favorite) use ($genreFilter) {
+            return in_array($genreFilter, $favorite->getGenreIds());
+        });
+    }
+
+    return $results->values()->all();
   }
 
   public function remove(int $userId, int $movieId): void

@@ -6,6 +6,7 @@ use App\Application\UseCases\Movie\MovieSearchUseCase;
 use App\Application\UseCases\Movie\MovieGetGenresUseCase;
 use App\Application\UseCases\Movie\MovieGetDetailsUseCase;
 use Illuminate\Http\Request;
+use Exception;
 
 class MovieController extends Controller
 {

@@ -32,7 +32,11 @@ class AuthController extends Controller
 
       return response()->json([
         'message' => 'Usuário registrado com sucesso!',
-        'user' => $user
+        'user' => [
+          'id' => $user->getId(),
+          'name' => $user->getName(),
+          'email' => $user->getEmail()
+        ]
       ], 201);
     } catch (Exception $e) {
       return response()->json(['message' => $e->getMessage()], 400);
