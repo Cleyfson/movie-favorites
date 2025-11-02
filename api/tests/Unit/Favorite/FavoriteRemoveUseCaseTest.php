@@ -70,24 +70,22 @@ class FavoriteRemoveUseCaseTest extends TestCase
 
   public function test_remove_non_existent_favorite(): void
   {
-    $initialCount = count($this->favoriteRepositoryMock->getFavorites());
     $nonExistentMovieId = 999;
     
-    $this->favoriteRemoveUseCase->execute(1, $nonExistentMovieId);
+    $this->expectException(\Exception::class);
+    $this->expectExceptionMessage('Filme não está nos favoritos.');
     
-    $remainingFavorites = $this->favoriteRepositoryMock->getFavorites();
-    $this->assertCount($initialCount, $remainingFavorites);
+    $this->favoriteRemoveUseCase->execute(1, $nonExistentMovieId);
   }
 
   public function test_remove_favorite_from_user_with_no_favorites(): void
   {
-    $initialCount = count($this->favoriteRepositoryMock->getFavorites());
     $userIdWithNoFavorites = 3;
     
-    $this->favoriteRemoveUseCase->execute($userIdWithNoFavorites, 101);
+    $this->expectException(\Exception::class);
+    $this->expectExceptionMessage('Filme não está nos favoritos.');
     
-    $remainingFavorites = $this->favoriteRepositoryMock->getFavorites();
-    $this->assertCount($initialCount, $remainingFavorites);
+    $this->favoriteRemoveUseCase->execute($userIdWithNoFavorites, 101);
   }
 
   protected function tearDown(): void
