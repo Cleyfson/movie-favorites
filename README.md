@@ -1,4 +1,4 @@
-# teste-de-software-tp
+# movie-favorites
 
 ## 1. Membros do Grupo
 - Cleifson da Silva Araujo  
