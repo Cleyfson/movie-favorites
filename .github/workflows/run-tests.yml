@@ -32,7 +32,7 @@ jobs:
         working-directory: ./api
 
       - name: Run unit tests with coverage
-        run: php artisan test --testsuite=Unit --coverage-clover=coverage.xml
+        run: php artisan test --coverage-clover=coverage.xml
         working-directory: ./api
 
       - name: Upload coverage report to Codecov
