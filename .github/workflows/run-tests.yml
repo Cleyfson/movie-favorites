@@ -20,7 +20,7 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           coverage: pcov
-          extensions: pdo, pdo_mysql, mbstring, zip, exif, pcntl, gd
+          extensions: pdo, pdo_mysql, mbstring, zip, exif, pcntl, gd, sodium, fileinfo
 
       - name: Install Composer dependencies
         run: composer install --no-progress --prefer-dist
